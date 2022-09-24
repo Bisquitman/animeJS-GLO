@@ -2,7 +2,11 @@
 
 ## Полезные ссылки
 
+***
+
 [Исходники](https://fs02.getcourse.ru/fileservice/file/download/a/12250/sc/129/h/95acb42f04246ca1e5e236fa6712033e.zip)
+
+### День 1
 
 - [Переменные](https://learn.javascript.ru/variables)
 
@@ -13,3 +17,11 @@
 - [Условия](https://learn.javascript.ru/ifelse)
 
 - [Циклы](https://learn.javascript.ru/while-for)
+
+### День 2
+
+- [seamless-scroll-polyfill](https://www.npmjs.com/package/seamless-scroll-polyfill)
+
+- [Swiper slider](https://swiperjs.com/)
+
+- [Firebase](https://firebase.google.com/)
