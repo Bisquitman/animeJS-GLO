@@ -25,3 +25,7 @@
 - [Swiper slider](https://swiperjs.com/)
 
 - [Firebase](https://firebase.google.com/)
+
+### День 3. Получение данных с сервера
+
+- [Методы перебора массивов](https://learn.javascript.ru/array-methods)
