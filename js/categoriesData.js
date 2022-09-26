@@ -1,19 +1,22 @@
-const mainData = () => {
+const categoriesData = () => {
   const preloader = document.querySelector('.preloder');
 
   const renderGenreList = (genres) => {
     const dropdownBlock = document.querySelector('.header__menu .dropdown');
     dropdownBlock.innerHTML = '';
 
-    genres.forEach(genre => {
-      dropdownBlock.insertAdjacentHTML('beforeend', `
+    genres.forEach((genre) => {
+      dropdownBlock.insertAdjacentHTML(
+        'beforeend',
+        `
         <li><a href="./categories.html?genre=${genre}">${genre}</a></li>
-      `);
+      `,
+      );
     });
   };
 
   const renderAnimeList = (array, genres) => {
-    const wrapper = document.querySelector('.product .col-lg-8');
+    const wrapper = document.querySelector('.product-page .col-lg-8');
     wrapper.innerHTML = '';
 
     genres.forEach((genre) => {
@@ -23,9 +26,11 @@ const mainData = () => {
       const listBlock = document.createElement('div');
       listBlock.className = 'row';
 
-      const list = array.filter((item) => item.ganre === genre);
+      const list = array.filter((item) => item.tags.includes(genre));
 
-      productBlock.insertAdjacentHTML('beforeend', `
+      productBlock.insertAdjacentHTML(
+        'beforeend',
+        `
         <div class="row">
           <div class="col-lg-8 col-md-8 col-sm-8">
             <div class="section-title">
@@ -38,36 +43,43 @@ const mainData = () => {
             </div>
           </div>
         </div>
-      `);
+      `,
+      );
 
       list.forEach((item) => {
         const tagsBlock = document.createElement('ul');
 
         item.tags.forEach((tag) => {
-          tagsBlock.insertAdjacentHTML('beforeend', `
+          tagsBlock.insertAdjacentHTML(
+            'beforeend',
+            `
             <li>${tag}</li>
-          `);
+          `,
+          );
         });
 
-        listBlock.insertAdjacentHTML('beforeend', `
+        listBlock.insertAdjacentHTML(
+          'beforeend',
+          `
           <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
               <div class="product__item__pic set-bg" data-setbg="${item.image}">
                 <div class="ep">${item.rating} / 10</div>
-                <div class="view"><i class="fa fa-eye"></i> ${Intl.NumberFormat("ru", {style: "decimal", minimumFractionDigits: 0}).format(item.views)}</div>
+                <div class="view"><i class="fa fa-eye"></i> ${Intl.NumberFormat(
+                  'ru',
+                  { style: 'decimal', minimumFractionDigits: 0 },
+                ).format(item.views)}</div>
               </div>
-              <div class="product__item__text">
-                ${tagsBlock.outerHTML}
-                <h5><a href="./anime-details.html?itemId=${item.id}">${item.title}</a></h5>
-              </div>
+              <div class="product__item__text">${tagsBlock.outerHTML}<h5><a href="./anime-details.html?itemId=${item.id}">${item.title}</a></h5></div>
             </div>
           </div>
-        `);
+        `,
+        );
       });
 
       productBlock.append(listBlock);
       wrapper.append(productBlock);
-      
+
       wrapper.querySelectorAll('.set-bg').forEach((element) => {
         element.style.backgroundImage = `url(${element.dataset.setbg})`;
       });
@@ -76,7 +88,7 @@ const mainData = () => {
     setTimeout(() => {
       preloader.classList.remove('active');
     }, 500);
-};
+  };
 
   const renderTopAnime = (array) => {
     const wrapper = document.querySelector('.filter__gallery');
@@ -84,13 +96,21 @@ const mainData = () => {
 
     array.forEach((item) => {
       // console.log('item: ', item);
-      wrapper.insertAdjacentHTML('beforeend', `
-        <div class="product__sidebar__view__item set-bg mix" data-setbg="${item.image}">
+      wrapper.insertAdjacentHTML(
+        'beforeend',
+        `
+        <div class="product__sidebar__view__item set-bg mix" data-setbg="${
+          item.image
+        }">
           <div class="ep">${item.rating} / 10</div>
-          <div class="view"><i class="fa fa-eye"></i> ${Intl.NumberFormat("ru", {style: "decimal", minimumFractionDigits: 0}).format(item.views)}</div>
+          <div class="view"><i class="fa fa-eye"></i> ${Intl.NumberFormat(
+            'ru',
+            { style: 'decimal', minimumFractionDigits: 0 },
+          ).format(item.views)}</div>
           <h5><a href="./anime-details.html?itemId=${item.id}">${item.title}</a></h5>
         </div>
-      `);
+      `,
+      );
     });
 
     wrapper.querySelectorAll('.set-bg').forEach((element) => {
@@ -101,16 +121,24 @@ const mainData = () => {
   fetch(DB_PATH)
     .then((response) => response.json())
     .then((data) => {
-      const genres = new Set()
+      const genres = new Set();
+      const genreParams = new URLSearchParams(window.location.search).get('genre')
 
-      data.forEach(item => {
-        genres.add(item.ganre)
+      // console.log(genreParams);
+
+      data.forEach((item) => {
+        genres.add(item.ganre);
       });
-      
+
       // console.log('data: ', data.anime);
       renderTopAnime(data.sort((a, b) => b.views - a.views).slice(0, 5));
-      renderAnimeList(data, genres);
+      if (genreParams) {
+        renderAnimeList(data, [genreParams]);
+      } else {
+        renderAnimeList(data, genres);
+      }
       renderGenreList(genres);
     });
 };
-mainData();
+
+categoriesData();
